@@ -27,11 +27,15 @@ LightSample sampleLight(in Light light)
 {
 	LightSample lightSample;
 
-	if (int(light.type) == AREA_LIGHT)
+	if (int(light.type) == AREA_LIGHT){
 		sampleAreaLight(light, lightSample);
+		return lightSample;
+	}
 	
-	if (int(light.type) == SPHERE_LIGHT)
+	if (int(light.type) == SPHERE_LIGHT){
 		sampleSphereLight(light, lightSample);
+		return lightSample;
+	}
 
 	return lightSample;
 }
@@ -135,11 +139,14 @@ bool interesetsEmitter(inout LightSample lightSample, float hit)
 	{
 		Light light = Lights[i];
 
-		if (light.type == AREA_LIGHT)
+		if (int(light.type) == AREA_LIGHT){
 			checkAreaLightIntersection(closest, hit, light, lightSample);
+			continue;
+		}
 
-		if (light.type == SPHERE_LIGHT)
+		if (int(light.type) == SPHERE_LIGHT){
 			checkSphereLightIntersection(closest, hit, light, lightSample);
+		}
 	}
 
 	return closest < INFINITY;
