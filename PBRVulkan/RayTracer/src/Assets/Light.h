@@ -11,12 +11,12 @@ namespace Assets
 		SphereLight
 	};
 
-	struct Light final
+	struct alignas(16) Light final
 	{
-		alignas(16) glm::vec3 position{};
-		alignas(16) glm::vec3 emission{};
-		alignas(16) glm::vec3 u{};
-		alignas(16) glm::vec3 v{};
+		glm::vec4 position{};
+		glm::vec4 emission{};
+		glm::vec4 u{};
+		glm::vec4 v{};
 		glm::float32_t area{};
 		glm::float32_t type{};
 		glm::float32_t radius{};

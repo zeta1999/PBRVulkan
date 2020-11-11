@@ -143,8 +143,8 @@ namespace Loader
 			if (strstr(line, "light"))
 			{
 				Assets::Light light{};
-				glm::vec3 v1{};
-				glm::vec3 v2{};
+				glm::vec4 v1{};
+				glm::vec4 v2{};
 				char light_type[20] = "None";
 
 				while (fgets(line, kMaxLineLength, file))

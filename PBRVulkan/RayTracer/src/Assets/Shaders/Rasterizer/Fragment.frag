@@ -49,9 +49,9 @@ void main()
 
 		if (int(light.type) == AREA_LIGHT)
 			// The center of an area light source
-			lightPos = light.position + 0.5 * light.v + 0.5 * light.u;
+			lightPos = (light.position + 0.5 * light.v + 0.5 * light.u).xyz;
 		else 
-			lightPos = light.position;
+			lightPos = light.position.xyz;
 
 		vec3 lightDir = normalize(lightPos - inPosition);
 

@@ -7,20 +7,20 @@ void sampleAreaLight(in Light light, out LightSample lightSample)
 	float r1 = rnd(seed);
 	float r2 = rnd(seed);
 
-	vec3 u = light.u * r1;
-	vec3 v = light.v * r2;
+	vec3 u = (light.u * r1).xyz;
+	vec3 v = (light.v * r2).xyz;
 
-	lightSample.normal   = normalize(cross(light.u, light.v));
-	lightSample.emission = light.emission * float(ubo.lights);
-	lightSample.position = light.position + u + v;
+	lightSample.normal   = normalize(cross(light.u.xyz, light.v.xyz));
+	lightSample.emission = light.emission.xyz * float(ubo.lights);
+	lightSample.position = light.position.xyz + u + v;
 }
 
 void sampleSphereLight(in Light light, out LightSample lightSample)
 {
-	vec3 position = light.position + uniformSampleSphere() * light.radius;
+	vec3 position = light.position.xyz + uniformSampleSphere() * light.radius;
 	lightSample.position = position;
-	lightSample.normal = normalize(position - light.position);
-	lightSample.emission = light.emission * float(ubo.lights);
+	lightSample.normal = normalize(position - light.position.xyz);
+	lightSample.emission = light.emission.xyz * float(ubo.lights);
 }
 
 LightSample sampleLight(in Light light)
@@ -38,7 +38,7 @@ LightSample sampleLight(in Light light)
 
 float sphereIntersect(in Light light)
 {
-	vec3 dir = light.position - gl_WorldRayOriginNV;
+	vec3 dir = light.position.xyz - gl_WorldRayOriginNV;
 	float b = dot(dir, gl_WorldRayDirectionNV);
 	float det = b * b - dot(dir, dir) + light.radius * light.radius;
 
@@ -57,11 +57,11 @@ float sphereIntersect(in Light light)
 
 float planeIntersect(in Light light)
 {
-	vec3 u = light.u;
-	vec3 v = light.v;
+	vec3 u = light.u.xyz;
+	vec3 v = light.v.xyz;
 
 	vec3 normal = normalize(cross(u, v));
-	vec4 plane = vec4(normal, dot(normal, light.position));
+	vec4 plane = vec4(normal, dot(normal, light.position.xyz));
 
 	u *= 1.0 / dot(u, u);
 	v *= 1.0 / dot(v, v);
@@ -70,7 +70,7 @@ float planeIntersect(in Light light)
 	float dt = dot(gl_WorldRayDirectionNV, n);
 	float t = (plane.w - dot(n, gl_WorldRayOriginNV)) / dt;
 	vec3 p = gl_WorldRayOriginNV + gl_WorldRayDirectionNV * t;
-	vec3 vi = p - light.position;
+	vec3 vi = p - light.position.xyz;
 
 	if (t > EPS)
 	{
@@ -96,11 +96,11 @@ void checkAreaLightIntersection(inout float closest, float hit, in Light light, 
 	{
 		closest = distance;
 
-		vec3 normal = normalize(cross(light.u, light.v));
+		vec3 normal = normalize(cross(light.u.xyz, light.v.xyz));
 		float cosTheta = abs(dot(-gl_WorldRayDirectionNV, normal));
 		float pdf = (distance * distance) / (light.area * cosTheta);
 
-		lightSample.emission = light.emission;
+		lightSample.emission = light.emission.xyz;
 		lightSample.pdf = pdf;
 		lightSample.normal = normal;
 	}
@@ -118,10 +118,10 @@ void checkSphereLightIntersection(inout float closest, float hit, in Light light
 		closest = distance;
 
 		vec3 surfacePos = gl_WorldRayOriginNV + gl_WorldRayDirectionNV * hit;
-		vec3 normal = normalize(surfacePos - light.position);
+		vec3 normal = normalize(surfacePos - light.position.xyz);
 		float pdf = (distance * distance) / light.area;
 
-		lightSample.emission = light.emission;
+		lightSample.emission = light.emission.xyz;
 		lightSample.pdf = pdf;
 		lightSample.normal = normal;
 	}

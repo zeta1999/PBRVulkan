@@ -51,10 +51,10 @@ struct Ray
 
 struct Light
 { 
-	vec3 position;
-	vec3 emission;
-	vec3 u;
-	vec3 v;
+	vec4 position;
+	vec4 emission;
+	vec4 u;
+	vec4 v;
 	float area;
 	float type;
 	float radius;

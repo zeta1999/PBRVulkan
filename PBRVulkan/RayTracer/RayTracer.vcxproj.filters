@@ -72,9 +72,6 @@
     <None Include="src\Assets\Shaders\Raytracer\Raytracing.rchit">
       <Filter>Assets\Shaders\Raytracer</Filter>
     </None>
-    <None Include="src\Assets\Shaders\Raytracer\Raytracing.rgen">
-      <Filter>Assets\Shaders\Raytracer</Filter>
-    </None>
     <None Include="src\Assets\Shaders\Raytracer\Raytracing.rmiss">
       <Filter>Assets\Shaders\Raytracer</Filter>
     </None>
@@ -116,6 +113,9 @@
     </None>
     <None Include="src\Assets\Shaders\Common\DirectLight.glsl">
       <Filter>Assets\Shaders\Common</Filter>
+    </None>
+    <None Include="src\Assets\Shaders\Raytracer\Raytracing.rgen">
+      <Filter>Assets\Shaders\Raytracer</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
