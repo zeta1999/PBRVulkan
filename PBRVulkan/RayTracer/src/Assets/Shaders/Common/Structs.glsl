@@ -43,7 +43,7 @@ struct Material
 	int heightmapTexID;
 };
 
-struct Ray 
+struct Ray
 { 
 	vec3 origin; 
 	vec3 direction; 

@@ -117,8 +117,8 @@ vec2 sampleUnitDisk()
 	{
 		float r1 = rnd(seed);
 		float r2 = rnd(seed);
-		vec2 p = 2 * vec2(r1, r2) - 1;
-		if (dot(p, p) < 1) return p;
+		vec2 p = 2.0 * vec2(r1, r2) - 1.0;
+		if (dot(p, p) < 1.0) return p;
 	}
 }
 
