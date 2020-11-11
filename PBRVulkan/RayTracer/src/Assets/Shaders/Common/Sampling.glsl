@@ -27,10 +27,9 @@ LightSample sampleLight(in Light light)
 {
 	LightSample lightSample;
 
-	if (int(light.type) == AREA_LIGHT)
-		sampleAreaLight(light, lightSample);
-	
-	if (int(light.type) == SPHERE_LIGHT)
+	if (light.type == AREA_LIGHT)
+		sampleAreaLight(light, lightSample);	
+	else
 		sampleSphereLight(light, lightSample);
 
 	return lightSample;
@@ -88,17 +87,17 @@ float planeIntersect(in Light light)
 
 void checkAreaLightIntersection(inout float closest, float hit, in Light light, inout LightSample lightSample)
 {
-	float distance = planeIntersect(light);
+	float dist = planeIntersect(light);
 
-	if (distance < 0.) distance = INFINITY;
+	if (dist < 0.) dist = INFINITY;
 
-	if (distance < closest && distance < hit)
+	if (dist < closest && dist < hit)
 	{
-		closest = distance;
+		closest = dist;
 
 		vec3 normal = normalize(cross(light.u, light.v));
 		float cosTheta = abs(dot(-gl_WorldRayDirectionNV, normal));
-		float pdf = (distance * distance) / (light.area * cosTheta);
+		float pdf = (dist * dist) / (light.area * cosTheta);
 
 		lightSample.emission = light.emission;
 		lightSample.pdf = pdf;
@@ -109,17 +108,17 @@ void checkAreaLightIntersection(inout float closest, float hit, in Light light, 
 
 void checkSphereLightIntersection(inout float closest, float hit, in Light light, inout LightSample lightSample)
 {
-	float distance = sphereIntersect(light);
+	float dist = sphereIntersect(light);
 
-	if (distance < 0.) distance = INFINITY;
+	if (dist < 0.) dist = INFINITY;
 
-	if (distance < closest && distance < hit)
+	if (dist < closest && dist < hit)
 	{
-		closest = distance;
+		closest = dist;
 
 		vec3 surfacePos = gl_WorldRayOriginNV + gl_WorldRayDirectionNV * hit;
 		vec3 normal = normalize(surfacePos - light.position);
-		float pdf = (distance * distance) / light.area;
+		float pdf = (dist * dist) / light.area;
 
 		lightSample.emission = light.emission;
 		lightSample.pdf = pdf;
@@ -137,8 +136,7 @@ bool interesetsEmitter(inout LightSample lightSample, float hit)
 
 		if (light.type == AREA_LIGHT)
 			checkAreaLightIntersection(closest, hit, light, lightSample);
-
-		if (light.type == SPHERE_LIGHT)
+		else
 			checkSphereLightIntersection(closest, hit, light, lightSample);
 	}
 

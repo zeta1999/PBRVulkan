@@ -56,7 +56,7 @@ struct Light
 	vec3 u;
 	vec3 v;
 	float area;
-	float type;
+	int type;
 	float radius;
 };
 

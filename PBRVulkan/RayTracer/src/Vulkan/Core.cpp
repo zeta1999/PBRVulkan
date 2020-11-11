@@ -1,6 +1,8 @@
 #include "Core.h"
 
 #include <array>
+#include <iostream>
+
 
 #include "Vulkan.h"
 #include "Window.h"
@@ -142,6 +144,15 @@ namespace Vulkan
 	void Core::CreatePhysicalDevice()
 	{
 		auto* physicalDevice = instance->GetDevices().front();
+
+		std::cout << "[INFO] Available Vulkan devices:" << std::endl;
+		for (const auto& device : instance->GetDevices())
+		{
+			VkPhysicalDeviceProperties prop;
+			vkGetPhysicalDeviceProperties(device, &prop);
+			const auto* selected = device == physicalDevice ? "	 (selected)" : "";
+			std::cout << "	" << prop.deviceName << selected << std::endl;
+		}
 
 		device.reset(new Device(physicalDevice, *surface));
 		commandPool.reset(new CommandPool(*device));
